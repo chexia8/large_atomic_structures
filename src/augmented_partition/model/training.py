@@ -70,40 +70,6 @@ def get_loss_flattened(node_output, edge_output, batch, criterion):
     return loss_node, loss_edge, loss
 
 
-def get_loss_transformed(node_output, edge_output, batch, criterion):
-    """
-    Process a batch of data (forward pass + loss) for labels and targets in the uncoupled basis
-    """
-
-    if hasattr(batch, 'labelled_node_size'):
-        labelled_node_size = batch.labelled_node_size.item()
-        labelled_edge_size = batch.labelled_edge_size.item()
-    else:
-        batch_size = len(batch)
-        labelled_node_size = batch[0].num_nodes * batch_size
-        labelled_edge_size = batch[0].num_edges * batch_size
-
-    # Compute the loss
-    loss_node = criterion(node_output[0:labelled_node_size], batch.node_y[0:labelled_node_size])            # node_y is the node label
-    loss_edge = criterion(edge_output[0:labelled_edge_size], batch.y[0:labelled_edge_size])                 # y is the edge label
-    output = torch.cat([node_output[0:labelled_node_size], edge_output[0:labelled_edge_size]], dim=0)
-    labels = torch.cat([batch.node_y[0:labelled_node_size], batch.y[0:labelled_edge_size]], dim=0)
-
-    loss = criterion(output, labels)
-
-    
-    # log_loss_node = criterion(log(abs(node_output[0:labelled_node_size]) + 1e-20), log(abs(batch.node_y[0:labelled_node_size]) + 1e-20)) 
-    # log_loss_edge = criterion(log(abs(edge_output[0:labelled_edge_size]) + 1e-20), log(abs(batch.y[0:labelled_edge_size]) + 1e-20))
-    
-    log_loss_total = criterion(torch.sign(output)*torch.log(torch.abs(output) + 1e-20), torch.sign(labels)*torch.log(torch.abs(labels) + 1e-20))
-
-    print("log_loss_total: ", log_loss_total)
-    # loss = loss + log_loss_total*1e-9
-
-    loss = log_loss_total
-     
-
-    return loss_node, loss_edge, loss
 
 def get_loss_unflattened(node_output, edge_output, batch, criterion, construct_kernel, equivariant_blocks, atom_orbitals, out_slices):
     """
@@ -436,7 +402,7 @@ def evaluate_slice(model, data_loader, construct_kernel, equivariant_blocks, ato
     plt.close()
 
 
-def analyze_model_GPU(model, test_batch, construct_kernel, equivariant_blocks, atom_orbitals, out_slices, device, save_file='model_in_training.pth'):
+def create_test_info(model, test_batch, construct_kernel, equivariant_blocks, atom_orbitals, out_slices, device, save_file='model_in_training.pth'):
     """
     Evaluate the model on the test set and return the mean absolute error for the node and edge predictions after reconstructing the Hamiltonian matrices from the predictions.
 

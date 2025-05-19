@@ -203,11 +203,6 @@ class SO2Net(torch.nn.Module):
         
         else:
             edge_embedding.embedding[:, offset_res, :] = edge_distance_embedding
-
-        # edge_embedding.embedding[:, offset_res, :] = edge_distance_embedding
-
-        # node_embedding.set_lmax_mmax([self.lmax], [self.mmax])
-        # edge_embedding.set_lmax_mmax([self.lmax], [self.mmax])
         
         # Create 3D rotation matrices for each of the edges
         edge_rot_mat = init_edge_rot_mat(edge_distance_vec)                 # shape = (num_edges, 3, 3) = [6, 3, 3]
@@ -575,12 +570,6 @@ class SO2Net_local(torch.nn.Module):
         edge_output = convert_to_irreps(edge_embedding,self.output_channels,self.lmax,self.edge_lin)
 
         return node_output, edge_output
-
-
-
-
-
-
 
 
 
