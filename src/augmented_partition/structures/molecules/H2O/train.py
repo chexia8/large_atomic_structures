@@ -2,7 +2,7 @@ import sys
 import os
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-lib_root = os.path.join(project_root, 'lib')
+lib_root = os.path.join(project_root, 'model')
 lib_equiformer_root = os.path.join(project_root, 'lib_equiformer')
 sys.path.append(lib_root)
 sys.path.append(lib_equiformer_root)
@@ -15,7 +15,7 @@ import torch.distributed as dist
 import torch
 import random
 
-import data, training, structure, SO2, network, SO3, compute_env as env, utils
+import data, training, structure, process_irreps, network, SO3, compute_env as env, utils
 
 from e3nn.o3 import Irreps
 print("Imported libraries", flush=True)
@@ -140,14 +140,14 @@ def main(folder):
     no_parity = True                                                                                        # No parity symmetry          
     orbital_types = [[0,0,1],[0, 0, 0, 1, 1, 2]]     
 
-    targets, net_out_irreps, _ = SO2.orbital_analysis(atom_orbitals, targets=None, no_parity=no_parity)
+    targets, net_out_irreps, _ = process_irreps.orbital_analysis(atom_orbitals, targets=None, no_parity=no_parity)
     index_to_Z, _ = torch.unique(numbers, sorted=True, return_inverse=True)
-    equivariant_blocks, out_js_list, out_slices = SO2.process_targets(orbital_types, index_to_Z, targets)   
+    equivariant_blocks, out_js_list, out_slices = process_irreps.process_targets(orbital_types, index_to_Z, targets)   
     # equivariant_blocks: start and end indices of the equivariant blocks in i and j direction for each target in targets
     # out_js_list: ll the l1 l2 interactions needed 
     # out_slices: marks the start and end of indices belonging to a certain target. Slice 1 (0 to 1) corresponds to the first target in equivariant blocks 
 
-    construct_kernel = SO2.e3TensorDecomp(net_out_irreps, 
+    construct_kernel = process_irreps.e3TensorDecomp(net_out_irreps, 
                                           out_js_list, 
                                           default_dtype_torch=dtype, 
                                           spinful=False,
@@ -207,7 +207,7 @@ def main(folder):
     print("Model trained")
 
     # create new construct_kernel for the training, this time on the cpu
-    construct_kernel = SO2.e3TensorDecomp(net_out_irreps, 
+    construct_kernel = process_irreps.e3TensorDecomp(net_out_irreps, 
                                         out_js_list, 
                                         default_dtype_torch=dtype, 
                                         spinful=False,
