@@ -5,4 +5,4 @@ from __future__ import annotations
 from importlib.metadata import version
 
 # Load the version
-__version__ = version("large_atomic")
+__version__ = version("augmented_partition")

@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "large_atomic"
+name = "augmented_partition"
 description="A Python package description goes here."
 version = "0.0.1"
 readme = "README.md"
@@ -39,15 +39,15 @@ docs = [
 ]
 
 [project.urls]
-repository = "https://github.com/Quantum-Accelerators/large_atomic"
-documentation = "https://quantum-accelerators.github.io/large_atomic/"
-changelog = "https://github.com/Quantum-Accelerators/large_atomic/blob/main/CHANGELOG.md"
+repository = "https://github.com/Quantum-Accelerators/augmented_partition"
+documentation = "https://quantum-accelerators.github.io/augmented_partition/"
+changelog = "https://github.com/Quantum-Accelerators/augmented_partition/blob/main/CHANGELOG.md"
 
 [tool.setuptools.package-data]
-large_atomic = ["py.typed"]
+augmented_partition = ["py.typed"]
 
 [tool.pyright]
-include = ["large_atomic"]
+include = ["augmented_partition"]
 exclude = ["**/__pycache__"]
 
 [tool.pytest.ini_options]
@@ -134,7 +134,7 @@ lint.unfixable = [
   "F841", # Removes unused variables
 ]
 lint.pydocstyle.convention = "numpy"
-lint.isort.known-first-party = ["large_atomic"]
+lint.isort.known-first-party = ["augmented_partition"]
 lint.isort.required-imports = ["from __future__ import annotations"]
 lint.isort.split-on-trailing-comma=false
 extend-include = ["*.ipynb"]
