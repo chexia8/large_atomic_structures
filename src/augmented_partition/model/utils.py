@@ -4,7 +4,7 @@ from scipy.spatial.transform import Rotation
 from e3nn.o3 import Irrep, Irreps, matrix_to_angles
 from ase.neighborlist import NeighborList
 import time
-from mpi4py import MPI
+# from mpi4py import MPI
 
 
 
@@ -222,6 +222,15 @@ def rotate_data(y,edge_indices,coordinates,orbital_type_dict,atomic_species,rota
     return rotated_y
 
 
+def rotate_irrep_vector(R, vector, irreps_left):
+    vector = torch.tensor(vector)
+    R = R.index_select(0, R.new_tensor([1, 2, 0]).int()).index_select(1, R.new_tensor([1, 2, 0]).int())
+    # irreps_left = Irreps([(1, (l, 1)) for l in l_lefts])
+    U_left = irreps_left.D_from_matrix(R).float()
+    rotated_vector = (vector@U_left)
+    return rotated_vector
+
+    
 # def rotate_data_back(pred,y,edge_indices,coordinates,orbital_type_dict,atomic_species,rotate_dic,rotate_back):
 def rotate_data_back(pred, y, edge_indices, rotate_dic, structures):
 

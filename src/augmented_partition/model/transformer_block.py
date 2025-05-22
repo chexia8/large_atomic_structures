@@ -4,27 +4,35 @@ import torch.nn.functional as F
 import math
 import torch_geometric
 import copy
-import mpi4py
+# import mpi4py
+
+# from augmented_partition.lib_equiformer import (
+#     activation,
+#     layer_norm,
+#     SO2_operations,
+#     SO3,
+#     radial_function
+# )
 
 # Note: we only use Gate Activation in this implementation
-from activation import (
+from augmented_partition.lib_equiformer.activation import (
     SmoothLeakyReLU, 
     GateActivation,
 )
 
-from layer_norm import (
+from augmented_partition.lib_equiformer.layer_norm import (
     get_normalization_layer
 )
 
-from SO2_operations import (
+from augmented_partition.lib_equiformer.SO2_operations import (
     SO2_Convolution, 
 )
 
-from SO3 import (
+from augmented_partition.lib_equiformer.SO3 import (
     SO3_Embedding, 
     SO3_LinearV2
 )
-from radial_function import RadialFunction
+from augmented_partition.lib_equiformer.radial_function import RadialFunction
 
 
 # Borrowed from EquiformerV2 (https://github.com/atomicarchitects/equiformer_v2.git)

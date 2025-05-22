@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import torch.distributed as dist
 from e3nn.o3 import Linear
-from transformer_block import NodeBlockV2, EdgeBlockV2
-from SO3 import SO3_Rotation, SO3_Embedding
+from augmented_partition.model.transformer_block import NodeBlockV2, EdgeBlockV2
+from augmented_partition.lib_equiformer.SO3 import SO3_Rotation, SO3_Embedding
 
 import torch.distributed as dist
 if dist.is_available() and dist.is_initialized():

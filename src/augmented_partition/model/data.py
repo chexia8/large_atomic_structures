@@ -2,7 +2,7 @@
 
 import torch
 import numpy as np
-import utils
+import augmented_partition.model.utils as utils
 
 from torch_geometric.data import Data as gnnData
 from torch_geometric.data import Batch, Data
