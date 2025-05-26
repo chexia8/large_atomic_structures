@@ -64,9 +64,9 @@ class SO2Net(torch.nn.Module):
         self.lmax = lmax
         self.mmax = mmax
 
-        ffn_activation = (
-            "scaled_silu"  # activation function used in the feedforward network
-        )
+        # ffn_activation = (
+        #     "scaled_silu"  # activation function used in the feedforward network
+        # )
         norm_type = "layer_norm_sh"  # normalizes l=0 and l>0 coefficients separately
 
         self.sphere_channels = sphere_channels
@@ -75,7 +75,7 @@ class SO2Net(torch.nn.Module):
         # attn_alpha_channels = attn_alpha_channels
         # attn_value_channels = attn_value_channels
         # ffn_hidden_channels = ffn_hidden_channels
-        attn_activation = "scaled_silu"
+        # attn_activation = "scaled_silu"
         use_attn_renorm = True
 
         use_m_share_rad = (
@@ -128,9 +128,9 @@ class SO2Net(torch.nn.Module):
                 edge_channels_list,
                 use_atom_edge_embedding,
                 use_m_share_rad,
-                attn_activation,
+                # attn_activation,
                 use_attn_renorm,
-                ffn_activation,
+                # ffn_activation,
                 norm_type,
             )
 
@@ -152,9 +152,9 @@ class SO2Net(torch.nn.Module):
                 edge_channels_list,
                 use_atom_edge_embedding,
                 use_m_share_rad,
-                attn_activation,
-                use_attn_renorm,
-                ffn_activation,
+                # attn_activation,
+                # use_attn_renorm,
+                # ffn_activation,
                 norm_type,
             )
 
@@ -274,9 +274,9 @@ class SO2Net_local(torch.nn.Module):
         self.lmax = lmax
         self.mmax = mmax
 
-        ffn_activation = (
-            "scaled_silu"  # activation function used in the feedforward network
-        )
+        # ffn_activation = (
+        #     "scaled_silu"  # activation function used in the feedforward network
+        # )
         norm_type = "layer_norm_sh"  # normalizes l=0 and l>0 coefficients separately
 
         self.sphere_channels = sphere_channels
@@ -285,7 +285,7 @@ class SO2Net_local(torch.nn.Module):
         # attn_alpha_channels = attn_alpha_channels
         # attn_value_channels = attn_value_channels
         # ffn_hidden_channels = ffn_hidden_channels
-        attn_activation = "scaled_silu"
+        # attn_activation = "scaled_silu"
         use_attn_renorm = True
 
         use_m_share_rad = (
@@ -340,9 +340,9 @@ class SO2Net_local(torch.nn.Module):
             edge_channels_list,
             use_atom_edge_embedding,
             use_m_share_rad,
-            attn_activation,
-            use_attn_renorm,
-            ffn_activation,
+            # attn_activation,
+            # use_attn_renorm,
+            # ffn_activation,
             norm_type,
             local_update=True,
         )
@@ -365,9 +365,9 @@ class SO2Net_local(torch.nn.Module):
             edge_channels_list,
             use_atom_edge_embedding,
             use_m_share_rad,
-            attn_activation,
-            use_attn_renorm,
-            ffn_activation,
+            # attn_activation,
+            # use_attn_renorm,
+            # ffn_activation,
             norm_type,
         )
 
@@ -389,9 +389,9 @@ class SO2Net_local(torch.nn.Module):
             edge_channels_list,
             use_atom_edge_embedding,
             use_m_share_rad,
-            attn_activation,
+            # attn_activation,
             use_attn_renorm,
-            ffn_activation,
+            # ffn_activation,
             norm_type,
         )
 
@@ -414,9 +414,9 @@ class SO2Net_local(torch.nn.Module):
                 edge_channels_list,
                 use_atom_edge_embedding,
                 use_m_share_rad,
-                attn_activation,
-                use_attn_renorm,
-                ffn_activation,
+                # attn_activation,
+                # use_attn_renorm,
+                # ffn_activation,
                 norm_type,
                 hidden_update=True,
             )
@@ -439,9 +439,9 @@ class SO2Net_local(torch.nn.Module):
                 edge_channels_list,
                 use_atom_edge_embedding,
                 use_m_share_rad,
-                attn_activation,
+                # attn_activation,
                 use_attn_renorm,
-                ffn_activation,
+                # ffn_activation,
                 norm_type,
                 local_update=True,
             )
@@ -464,9 +464,9 @@ class SO2Net_local(torch.nn.Module):
             edge_channels_list,
             use_atom_edge_embedding,
             use_m_share_rad,
-            attn_activation,
-            use_attn_renorm,
-            ffn_activation,
+            # attn_activation,
+            # use_attn_renorm,
+            # ffn_activation,
             norm_type,
         )
 

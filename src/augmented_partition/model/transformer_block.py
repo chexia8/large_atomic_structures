@@ -299,7 +299,7 @@ class SO2NodeUpdate(torch.nn.Module):
         x_message.embedding = attn
 
         # Rotate back the irreps
-        x_message._rotate_inv(self.SO3_rotation, self.mappingReduced)
+        x_message._rotate_inv(self.SO3_rotation)
 
         # Aggregate incoming neighboring messages for each target node
         x_message._reduce_edge(edge_index[1], len(x.embedding))
@@ -327,7 +327,7 @@ class NodeBlockV2(torch.nn.Module):
         edge_channels_list,
         use_atom_edge_embedding=True,
         use_m_share_rad=False,
-        attn_activation="silu",
+        # attn_activation="silu",
         use_attn_renorm=True,
         # ffn_activation="silu",
         norm_type="rms_norm_sh",
@@ -362,7 +362,7 @@ class NodeBlockV2(torch.nn.Module):
                 edge_channels_list=edge_channels_list,
                 use_atom_edge_embedding=use_atom_edge_embedding,
                 use_m_share_rad=use_m_share_rad,
-                activation=attn_activation,
+                # activation=attn_activation,
                 use_attn_renorm=use_attn_renorm,
             )
 
@@ -589,7 +589,7 @@ class SO2EdgeUpdate(torch.nn.Module):
         x_message.embedding = self.gate_act(x_0_gating, x_message.embedding)
 
         # Rotate back the irreps
-        x_message._rotate_inv(self.SO3_rotation, self.mappingReduced)
+        x_message._rotate_inv(self.SO3_rotation)
 
         # Project
         return self.proj(x_message)
@@ -614,8 +614,8 @@ class EdgeBlockV2(torch.nn.Module):
         edge_channels_list,
         use_atom_edge_embedding=True,
         use_m_share_rad=False,
-        attn_activation="silu",
-        use_attn_renorm=True,
+        # attn_activation="silu",
+        # use_attn_renorm=True,
         # ffn_activation="silu",
         norm_type="rms_norm_sh",
         hidden_update=False,
@@ -649,8 +649,8 @@ class EdgeBlockV2(torch.nn.Module):
                 edge_channels_list=edge_channels_list,
                 use_atom_edge_embedding=use_atom_edge_embedding,
                 use_m_share_rad=use_m_share_rad,
-                activation=attn_activation,
-                use_attn_renorm=use_attn_renorm,
+                # activation=attn_activation,
+                # use_attn_renorm=use_attn_renorm,
             )
 
         else:
@@ -669,8 +669,8 @@ class EdgeBlockV2(torch.nn.Module):
                 edge_channels_list=edge_channels_list,
                 use_atom_edge_embedding=use_atom_edge_embedding,
                 use_m_share_rad=use_m_share_rad,
-                activation=attn_activation,
-                use_attn_renorm=use_attn_renorm,
+                # activation=attn_activation,
+                # use_attn_renorm=use_attn_renorm,
             )
 
         self.ffn = FeedForwardNetwork(
@@ -938,7 +938,7 @@ class SO2NodeUpdate_local(torch.nn.Module):
         x_message.embedding = attn
 
         # Rotate back the irreps
-        x_message._rotate_inv(self.SO3_rotation, self.mappingReduced)
+        x_message._rotate_inv(self.SO3_rotation)
 
         # Compute the sum of the incoming neighboring messages for each target node
         x_message._reduce_edge(edge_index[1], len(x.embedding))
@@ -967,7 +967,7 @@ class SO2HiddenUpdate(
         use_atom_edge_embedding=True,
         use_m_share_rad=False,
         # activation="scaled_silu",
-        use_attn_renorm=True,
+        # use_attn_renorm=True,
     ):
         super().__init__()
 
@@ -1005,7 +1005,7 @@ class SO2HiddenUpdate(
         else:
             self.source_embedding, self.target_embedding = None, None
 
-        self.use_attn_renorm = use_attn_renorm
+        # self.use_attn_renorm = use_attn_renorm
 
         # Create SO(2) convolution blocks
         extra_m0_output_channels = None
@@ -1109,7 +1109,7 @@ class SO2HiddenUpdate(
         x_message.embedding = self.gate_act(x_0_gating, x_message.embedding)
 
         # Rotate back the irreps
-        x_message._rotate_inv(self.SO3_rotation, self.mappingReduced)
+        x_message._rotate_inv(self.SO3_rotation)
 
         # Project
         return self.proj(x_message)
