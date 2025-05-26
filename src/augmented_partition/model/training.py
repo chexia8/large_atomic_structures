@@ -219,12 +219,7 @@ def train_and_validate_model_subgraph(
     # criterion = nn.L1Loss(reduction='mean')
 
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer,
-        mode="min",
-        factor=0.5,
-        patience=patience,
-        threshold=threshold,
-        verbose=True,
+        optimizer, mode="min", factor=0.5, patience=patience, threshold=threshold
     )
 
     if dist.is_available() and dist.is_initialized():
