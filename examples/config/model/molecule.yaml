@@ -1,0 +1,21 @@
+#model hyperparameters for molecule training
+
+pbc: false
+dtype: "float64"
+
+#network:
+sphere_channels: 128
+num_heads: 2
+attn_hidden_channels: 128
+attn_alpha_channels: 32
+attn_value_channels: 32
+ffn_hidden_channels: 64
+
+# training:
+patience: 50
+num_MP_layers: 2
+num_epochs: 5000
+threshold: 1e-5
+lr: 1e-3
+rcut: 1000.0
+criterion: "combined"

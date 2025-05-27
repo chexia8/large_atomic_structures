@@ -190,6 +190,29 @@ def get_loss_unflattened(
 ############################################################
 
 
+class RMSELoss(nn.Module):
+    def __init__(self, eps=1e-6):
+        super().__init__()
+        self.mse = nn.MSELoss()
+        self.eps = eps
+
+    def forward(self, yhat, y):
+        return torch.sqrt(self.mse(yhat, y) + self.eps)
+
+
+class CombinedLoss(nn.Module):
+    def __init__(self, eps=1e-16):
+        super().__init__()
+        self.mse = nn.MSELoss()
+        self.mae = nn.L1Loss()
+        self.eps = eps
+
+    def forward(self, yhat, y):
+        return torch.sqrt(self.mse(yhat, y) + self.eps) + self.mae(yhat, y)
+        # print("rmse loss: ", torch.sqrt(self.mse(yhat,y) + self.eps))
+        # print("mae loss: ", self.mae(yhat,y))
+
+
 def train_and_validate_model_subgraph(
     model,
     optimizer,
@@ -216,7 +239,10 @@ def train_and_validate_model_subgraph(
         criterion = nn.MSELoss(reduction="mean")
     elif criterion == "mae":
         criterion = nn.L1Loss(reduction="mean")
-    # criterion = nn.L1Loss(reduction='mean')
+    elif criterion == "rmse":
+        criterion = RMSELoss()
+    elif criterion == "combined":
+        criterion = CombinedLoss()
 
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, mode="min", factor=0.5, patience=patience, threshold=threshold
@@ -400,6 +426,151 @@ def train_and_validate_model_subgraph(
 ############################################################
 # Evaluating/Testing the model
 ############################################################
+def evaluate_batch(
+    model,
+    test_data_loader,
+    construct_kernel,
+    equivariant_blocks,
+    atom_orbitals,
+    out_slices,
+    device,
+):
+    total_length = 0
+    total_node_loss = 0
+    total_edge_loss = 0
+    total_loss = 0
+
+    for batch in test_data_loader:
+        model.eval()
+        if dist.is_available() and dist.is_initialized():
+            # find_unused_parameters=True handles the cases where some parameters dont recieve gradients, such as the directed ones
+            model = nn.parallel.DistributedDataParallel(
+                model,
+                device_ids=[device],
+                output_device=device,
+                find_unused_parameters=True,
+            )
+
+        with torch.no_grad():
+            test_batch = batch.to(device)
+
+            # Forward pass
+            test_node, test_edge = model(test_batch)
+            # print("--> Memory allocated: " + str(torch.cuda.memory_allocated(device)/1e9) + "GB")
+            # torch.cuda.synchronize()
+            test_node = test_node.cpu()
+            test_edge = test_edge.cpu()
+
+            # if test_batch.labelled_node_size.item() exists, use it, otherwise use the total number of nodes
+            if hasattr(test_batch, "labelled_node_size"):
+                labelled_node_size = test_batch.labelled_node_size.item()
+                labelled_edge_size = test_batch.labelled_edge_size.item()
+            else:
+                batch_size = len(test_batch)
+                labelled_node_size = test_batch[0].num_nodes * batch_size
+                labelled_edge_size = test_batch[0].num_edges * batch_size
+
+            arange_tensor = torch.arange(labelled_node_size).unsqueeze(0)
+            onsite_edges = torch.cat((arange_tensor, arange_tensor), 0)
+
+            # Process node predictions
+            flattened_node_labels = construct_kernel.get_H(
+                test_batch.node_y[0:labelled_node_size].cpu()
+            )
+            flattened_node_pred = construct_kernel.get_H(
+                test_node[:labelled_node_size].cpu()
+            )
+
+            node_label = utils.unflatten(
+                flattened_node_labels,
+                test_batch.x[0:labelled_node_size],
+                onsite_edges,
+                equivariant_blocks,
+                atom_orbitals,
+                out_slices,
+            )
+
+            node_pred = utils.unflatten(
+                flattened_node_pred,
+                test_batch.x[0:labelled_node_size],
+                onsite_edges,
+                equivariant_blocks,
+                atom_orbitals,
+                out_slices,
+            )
+
+            H_block_node_labels = [matrix.flatten() for matrix in node_label.values()]
+            node_label_tensor = torch.cat(H_block_node_labels)
+            H_block_node_pred = [matrix.flatten() for matrix in node_pred.values()]
+            node_pred_tensor = torch.cat(H_block_node_pred)
+
+            # Process edge predictions
+            flattened_edge_labels = construct_kernel.get_H(
+                test_batch.y[0:labelled_edge_size].cpu()
+            )
+            flattened_edge_pred = construct_kernel.get_H(
+                test_edge[0:labelled_edge_size].cpu()
+            )
+
+            edge_label = utils.unflatten(
+                flattened_edge_labels,
+                test_batch.x[0:labelled_node_size],
+                test_batch.edge_index[:, 0:labelled_edge_size],
+                equivariant_blocks,
+                atom_orbitals,
+                out_slices,
+            )
+
+            edge_pred = utils.unflatten(
+                flattened_edge_pred,
+                test_batch.x[0:labelled_node_size],
+                test_batch.edge_index[:, 0:labelled_edge_size],
+                equivariant_blocks,
+                atom_orbitals,
+                out_slices,
+            )
+
+            H_block_edge_labels = [matrix.flatten() for matrix in edge_label.values()]
+            edge_label_tensor = torch.cat(H_block_edge_labels)
+            H_block_edge_pred = [matrix.flatten() for matrix in edge_pred.values()]
+            edge_pred_tensor = torch.cat(H_block_edge_pred)
+
+            # Compute the MAE
+            pred_tensor = torch.cat([node_pred_tensor, edge_pred_tensor])
+            label_tensor = torch.cat([node_label_tensor, edge_label_tensor])
+
+            node_MAE = torch.mean(torch.abs(node_pred_tensor - node_label_tensor))
+            edge_MAE = torch.mean(torch.abs(edge_pred_tensor - edge_label_tensor))
+            MAEloss = torch.mean(torch.abs(pred_tensor - label_tensor))
+
+            print(
+                "Mean Absolute Node Error in mHartree: ",
+                torch.mean(torch.abs(node_pred_tensor - node_label_tensor)) * 1e3,
+            )
+            print(
+                "Mean Absolute Edge Error in mHartree: ",
+                torch.mean(torch.abs(edge_pred_tensor - edge_label_tensor)) * 1e3,
+            )
+            print("Mean Absolute Error in mHartree: ", MAEloss * 1e3)
+
+            model.train()  # Set the model back to training mode
+
+            total_length += len(test_batch)
+            print(len(test_batch), " samples in the batch")
+
+            total_node_loss += node_MAE * len(test_batch)
+            total_edge_loss += edge_MAE * len(test_batch)
+            total_loss += MAEloss * len(test_batch)
+
+    # Average the losses over all batches
+    averaged_total_loss = total_loss / total_length
+    averaged_node_loss = total_node_loss / total_length
+    averaged_edge_loss = total_edge_loss / total_length
+
+    print("Total Node Loss: ", averaged_node_loss * 1e3)
+    print("Total Edge Loss: ", averaged_edge_loss * 1e3)
+    print("Total Loss: ", averaged_total_loss * 1e3)
+    print("Evaluation completed")
 
 
 def evaluate_slice(

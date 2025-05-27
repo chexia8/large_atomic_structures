@@ -1,0 +1,13 @@
+tag: water
+db_path: '/usr/scratch/attelas8/manasa/ICLR_2025/amorphous_gnns/datasets/schnorb_hamiltonian_water.db'
+num_train: 500
+num_validate: 500
+num_test: 3900
+
+batch_size: 10
+test_batch_size: 64
+
+lmax: 4
+mmax: 4
+atom_orbitals: {'1': [0, 0, 1],'8':[0, 0, 0, 1, 1, 2]}
+orbital_types: [[0,0,1],[0, 0, 0, 1, 1, 2]]
