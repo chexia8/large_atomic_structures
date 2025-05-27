@@ -127,6 +127,8 @@ lint.ignore = [
   "PLR",    # Design related pylint codes
   "PERF203",  # try-except-in-loop
   "RET505", # Unnecessary `elif` after `return`
+  "T201", # Print statements
+  "NPY002", # Use of deprecated singleton NumPy RNG object
 ]
 src = ["src"]
 lint.unfixable = [
