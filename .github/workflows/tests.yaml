@@ -38,7 +38,7 @@ jobs:
       - name: Install pip packages
         run: |
           pip install uv
-          uv pip install --system -r tests/requirements.txt .[dev]
+          uv pip install --system --index-strategy unsafe-best-match -r tests/requirements.txt .[dev]
 
       - name: Set coverage core
         run: |

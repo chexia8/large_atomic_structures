@@ -1,6 +1,7 @@
-numpy==2.2.6
 --extra-index-url https://download.pytorch.org/whl/cpu
 --find-links https://data.pyg.org/whl/torch-2.2.0+cpu.html
+--index-url https://pypi.org/simple
+numpy==2.2.6
 torch==2.2.1+cpu
 torchvision==0.17.1+cpu
 e3nn==0.5.1
