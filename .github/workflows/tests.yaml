@@ -1,8 +1,5 @@
 name: tests
 
-env:
-  PY_COLORS: 1
-
 on:
   push:
     branches: [main]
@@ -10,7 +7,6 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   tests-base:
