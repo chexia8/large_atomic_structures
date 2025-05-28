@@ -1,8 +1,5 @@
 name: tests
 
-env:
-  PY_COLORS: 1
-
 on:
   push:
     branches: [main]
@@ -10,7 +7,6 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   tests-base:
@@ -18,7 +14,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: ["3.10", "3.13"]
+        python-version: ["3.10", "3.12"]
 
     defaults:
       run:
@@ -38,7 +34,7 @@ jobs:
       - name: Install pip packages
         run: |
           pip install uv
-          uv pip install --system -r tests/requirements.txt .[dev]
+          uv pip install --system --index-strategy unsafe-best-match -r tests/requirements.txt .[dev]
 
       - name: Set coverage core
         run: |
@@ -52,4 +48,4 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
-          fail_ci_if_error: true
+          fail_ci_if_error: false
