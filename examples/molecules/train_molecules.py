@@ -1,12 +1,3 @@
-# import sys
-
-# project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-# lib_root = os.path.join(project_root, 'model')
-# lib_equiformer_root = os.path.join(project_root, 'lib_equiformer')
-# sys.path.append(lib_root)
-# sys.path.append(lib_equiformer_root)
-# print(f"Added {lib_root} to the path", flush=True)
-# print(f"Added {lib_equiformer_root} to the path", flush=True)
 from __future__ import annotations
 
 import random
@@ -56,8 +47,6 @@ def main(cfg: DictConfig):
     # Input parameters and for the H2O molecule dataset
     # ************************************************************
 
-    # db_path = folder+'/datasets/schnorb_hamiltonian_malondialdehyde.db'
-    # db_path = '/usr/scratch/attelas8/manasa/ICLR_2025/amorphous_gnns/datasets/schnorb_hamiltonian_water.db'
     db_path = cfg.dataset.db_path
     database = ASEAtomsData(db_path)
     print("Number of Molecules in the database: ", len(database))
@@ -74,10 +63,6 @@ def main(cfg: DictConfig):
     restart_file = None
     save_file = "model"
 
-    # if not os.path.exists('results_' + tag):
-    #     os.makedirs('results_' + tag)
-    # save_file = 'results_' + tag + '/' + save_file
-
     results_dir = Path(f"results_{tag}")
     results_dir.mkdir(parents=True, exist_ok=True)
 
@@ -87,9 +72,11 @@ def main(cfg: DictConfig):
     batch_size = cfg.dataset.batch_size  # Batch size for training
     loss_tol = 1e-10
     lr = cfg.model.lr  # Learning rate for the optimizer
+    min_lr = cfg.model.min_lr  # Minimum learning rate for the optimizer
     patience = cfg.model.patience  # Patience for early stopping
+    decay = cfg.model.decay  # Decay factor for the learning rate scheduler
     threshold = cfg.model.threshold  # Threshold for early stopping
-    rcut = cfg.model.rcut  # Cutoff radius for the message passing layers
+    rcut = cfg.dataset.rcut  # Cutoff radius for the message passing layers
 
     # Structure and Network parameters:
     pbc = cfg.model.pbc  # Periodic boundary conditions
@@ -98,8 +85,10 @@ def main(cfg: DictConfig):
     num_MP_layers = cfg.model.num_MP_layers  # Number of message passing layers
     dtype = torch.float64  # Use double precision floating point for benchmarking
     torch.set_default_dtype(dtype)
-    lmax = 4
-    mmax = 4
+    lmax = cfg.dataset.lmax  # Maximum angular momentum for the spherical harmonics
+    mmax = (
+        cfg.dataset.mmax
+    )  # Maximum magnetic quantum number for the spherical harmonics
 
     criterion = cfg.model.criterion  # Loss function for the training
 
@@ -110,12 +99,6 @@ def main(cfg: DictConfig):
     attn_alpha_channels = cfg.model.attn_alpha_channels
     attn_value_channels = cfg.model.attn_value_channels
     ffn_hidden_channels = cfg.model.ffn_hidden_channels
-
-    # irreps_in = Irreps([(sphere_channels, (0, 1)),
-    #                     (sphere_channels, (1, 1)),
-    #                     (sphere_channels, (2, 1)),
-    #                     (sphere_channels, (3, 1)),
-    #                     (sphere_channels, (4, 1))])
 
     irreps_list = []
     irreps_list.extend(
@@ -185,12 +168,6 @@ def main(cfg: DictConfig):
 
     # Define irreducible representations for the SO2 model
     edge_channels_list = [sphere_channels, sphere_channels, sphere_channels]
-
-    # *** Preform orbital analysis:
-    # atom_orbitals = {'1': [0, 0, 1],'8':[0, 0, 0, 1, 1, 2]}                                                 # Orbital types of each atom in the structure
-    # numbers = torch.tensor([utils.periodic_table[i] for i in sample_molecule.atomic_species])               # Atomic numbers of each atom in the structure
-    # no_parity = True                                                                                        # No parity symmetry
-    # orbital_types = [[0,0,1],[0, 0, 0, 1, 1, 2]]
 
     atom_orbitals = (
         cfg.dataset.atom_orbitals
@@ -285,8 +262,9 @@ def main(cfg: DictConfig):
         num_epochs,
         loss_tol,
         patience,
+        decay,
         threshold,
-        min_lr=1e-10,
+        min_lr=min_lr,
         save_file=save_file,
         unflatten=False,
         construct_kernel=construct_kernel,
@@ -331,13 +309,5 @@ def main(cfg: DictConfig):
         )
 
 
-# if __name__ == "__main__":
-#     # parser = argparse.ArgumentParser(description="Amorphous GNNs --- HfO2")
-#     # parser.add_argument("-f", "--folder", default="", required=False)
-#     # args = parser.parse_args()
-
-#     # print(f"Starting main ... dataset folder is '{args.folder}'", flush=True)
-
-#     main(cfg:DictConfig)
 if __name__ == "__main__":
     main()

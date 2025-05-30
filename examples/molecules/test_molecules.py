@@ -1,12 +1,3 @@
-# import sys
-
-# project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-# lib_root = os.path.join(project_root, 'model')
-# lib_equiformer_root = os.path.join(project_root, 'lib_equiformer')
-# sys.path.append(lib_root)
-# sys.path.append(lib_equiformer_root)
-# print(f"Added {lib_root} to the path", flush=True)
-# print(f"Added {lib_equiformer_root} to the path", flush=True)
 from __future__ import annotations
 
 import random
@@ -55,8 +46,6 @@ def main(cfg: DictConfig):
     # Input parameters and for the H2O molecule dataset
     # ************************************************************
 
-    # db_path = folder+'/datasets/schnorb_hamiltonian_malondialdehyde.db'
-    # db_path = '/usr/scratch/attelas8/manasa/ICLR_2025/amorphous_gnns/datasets/schnorb_hamiltonian_water.db'
     db_path = cfg.dataset.db_path
     database = ASEAtomsData(db_path)
     print("Number of Molecules in the database: ", len(database))
@@ -69,24 +58,14 @@ def main(cfg: DictConfig):
     num_test = cfg.dataset.num_train
 
     tag = cfg.dataset.tag  # Tag for the results
-
-    # save_file = str(results_dir / save_file)
-
     results_dir = Path(f"results_{tag}")
-    # results_dir.mkdir(parents=True, exist_ok=True)
-
     restart_file = "model"
     restart_file = str(results_dir / restart_file)
 
     save_file = "test"  # File to save the model
     save_file = str(results_dir / save_file)  # File to save the model
 
-    # num_epochs = cfg.model.num_epochs  # Number of epochs for training
     batch_size = cfg.dataset.test_batch_size  # Batch size for training
-    # loss_tol = 1e-10
-    # lr = cfg.model.lr  # Learning rate for the optimizer
-    # patience = cfg.model.patience  # Patience for early stopping
-    # threshold = cfg.model.threshold  # Threshold for early stopping
     rcut = cfg.model.rcut  # Cutoff radius for the message passing layers
 
     # Structure and Network parameters:
@@ -96,8 +75,10 @@ def main(cfg: DictConfig):
     num_MP_layers = cfg.model.num_MP_layers  # Number of message passing layers
     dtype = torch.float64  # Use double precision floating point for benchmarking
     torch.set_default_dtype(dtype)
-    lmax = 4
-    mmax = 4
+    lmax = cfg.dataset.lmax  # Maximum angular momentum for the spherical harmonics
+    mmax = (
+        cfg.dataset.mmax
+    )  # Maximum magnetic quantum number for the spherical harmonics
 
     # criterion = cfg.model.criterion  # Loss function for the training
 
@@ -131,26 +112,8 @@ def main(cfg: DictConfig):
 
     # *** Prepare the dataset:
     sample_molecule = None
-    # training_molecules = []
-    # validation_molecules = []
     testing_molecules = []
-    # for i in range(num_train):
-    #     molecule_index = int(training_data_indices[i])
-    #     training_molecules.append(structure.Structure(None, None, None,
-    #                                         pbc,
-    #                                         orbital_basis,
-    #                                         dataset='schnet',
-    #                                         database_props=database.__getitem__(molecule_index),
-    #                                         self_interaction=False, bothways=bothways, rcut=rcut))
 
-    # for i in range(num_validate):
-    #     molecule_index = int(validation_data_indices[i])
-    #     validation_molecules.append(structure.Structure(None, None, None,
-    #                                             pbc,
-    #                                             orbital_basis,
-    #                                             dataset='schnet',
-    #                                             database_props=database.__getitem__(molecule_index),
-    #                                             self_interaction=False, bothways=bothways, rcut=rcut))
     for i in range(num_test):
         molecule_index = int(testing_data_indices[i])
         testing_molecules.append(
@@ -225,10 +188,7 @@ def main(cfg: DictConfig):
         irreps_out,
     )
     model = model.to(device)
-    # optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
-    # if restart_file is not None:
-    #     model, optimizer = env.dist_restart('results_' + tag + '/' + restart_file + '.pt', model, optimizer)
     if restart_file is not None:
         state_dict = torch.load(restart_file + "_state_dic.pt", map_location=device)
         model.load_state_dict(state_dict)
@@ -240,8 +200,6 @@ def main(cfg: DictConfig):
     # Run the training process
     # ************************************************************
 
-    # training_data_loader = data.batch_data_molecules(training_molecules, device, num_train, batch_size, equivariant_blocks, out_slices, construct_kernel, dtype)
-    # validation_data_loader = data.batch_data_molecules(validation_molecules, device, num_validate, batch_size, equivariant_blocks, out_slices, construct_kernel, dtype)
     testing_data_loader = data.batch_data_molecules(
         testing_molecules,
         device,
@@ -253,24 +211,6 @@ def main(cfg: DictConfig):
         dtype,
     )
     print("training model...")
-    # training.train_and_validate_model_subgraph(model,
-    #                                             optimizer,
-    #                                             training_data_loader,
-    #                                             validation_data_loader,
-    #                                             num_epochs,
-    #                                             loss_tol,
-    #                                             patience,
-    #                                             threshold,
-    #                                             min_lr=1e-10,
-    #                                             save_file=save_file,
-    #                                             unflatten=False,
-    #                                             construct_kernel=construct_kernel,
-    #                                             equivariant_blocks=equivariant_blocks,
-    #                                             atom_orbitals=atom_orbitals,
-    #                                             out_slices=out_slices,
-    #                                             criterion=criterion)
-    # print("Model trained")
-
     # create new construct_kernel for the training, this time on the cpu
     construct_kernel = process_irreps.e3TensorDecomp(
         net_out_irreps,
@@ -293,13 +233,5 @@ def main(cfg: DictConfig):
     )
 
 
-# if __name__ == "__main__":
-#     # parser = argparse.ArgumentParser(description="Amorphous GNNs --- HfO2")
-#     # parser.add_argument("-f", "--folder", default="", required=False)
-#     # args = parser.parse_args()
-
-#     # print(f"Starting main ... dataset folder is '{args.folder}'", flush=True)
-
-#     main(cfg:DictConfig)
 if __name__ == "__main__":
     main()
