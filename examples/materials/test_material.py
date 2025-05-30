@@ -101,19 +101,10 @@ def main(cfg: DictConfig):
     lmax = cfg.dataset.lmax
     mmax = cfg.dataset.mmax
 
-    # graph partitioning parameters:
-    # num_subgraph = 1  # min 10 for P100 GPU memory with attn_hidden_channels=64
-    # num_batch = 1  # number of subgraphs which will actually be added to the dataset for training,
     # after dividing the graph into 'num_subgraph' subgraphs
     # Parameters:
     num_MP_layers = cfg.model.num_MP_layers  # Number of message passing layers                                            # Loss tolerance for early stopping
-    # num_epochs = cfg.model.num_epochs  # Number of epochs for training
-    # lr = cfg.model.lr  # Learning rate for the optimizer
-    # patience = cfg.model.patience  # Patience for early stopping
-    # threshold = cfg.model.threshold  # Threshold for early stopping
-    # min_lr = cfg.model.min_lr  # Minimum learning rate for the scheduler
     use_overlap = False
-    # loss_tol = 1e-10  # Loss tolerance for early stopping
 
     # *** Initialize the hyperparameters of the SO2 model:
     sphere_channels = cfg.model.sphere_channels
@@ -122,8 +113,6 @@ def main(cfg: DictConfig):
     attn_alpha_channels = cfg.model.attn_alpha_channels
     attn_value_channels = cfg.model.attn_value_channels
     ffn_hidden_channels = cfg.model.ffn_hidden_channels
-
-    # criterion = cfg.model.criterion  # Loss function to use for training
 
     # ************************************************************
     # Create the dataset
@@ -221,15 +210,6 @@ def main(cfg: DictConfig):
     )
     print("Data loader created")
 
-    # start = cfg.dataset.val_start  # Starting position along the structure
-    # total_length = cfg.dataset.val_total_length
-    # num_slices = 1 #fixed to 1 slice for validation
-    # slice_direction = cfg.dataset.val_slice_direction  # Direction of the slices, e.g., 'x', 'y', 'z'
-    # assert num_slices == 1, "num_slices must be 1 for validation"
-
-    # validation_loader = data.batch_data_HfO2_cartesian(a_HfO2_val, start, total_length, num_slices, equivariant_blocks=equivariant_blocks, out_slices=out_slices, construct_kernel=construct_kernel, dtype=torch.float32, slice_direction=slice_direction, use_overlap=use_overlap)
-    # print("Validation loader created")
-
     if dist.is_initialized():
         dist.barrier()
 
@@ -253,7 +233,6 @@ def main(cfg: DictConfig):
         use_overlap=use_overlap,
     )
     model = model.to(device)
-    # optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     if restart_file is not None:
         state_dict = torch.load(restart_file + "_state_dic.pt", map_location=device)
@@ -289,17 +268,6 @@ def main(cfg: DictConfig):
             compute_total_loss=True,
             plot=True,
         )
-
-    # *** Train the model parameters:
-    # print("validation loader created", flush=True)
-    # print("training...", flush=True)
-
-    # training.train_and_validate_model_subgraph(model, optimizer, data_loader, validation_loader, num_epochs, loss_tol, patience, threshold, min_lr = min_lr, save_file=save_file, schedule=True, criterion = criterion)
-    # print("Model trained, plotting fit to training data", flush=True)
-    # training.evaluate_slice(model, data_loader, construct_kernel, equivariant_blocks, atom_orbitals, out_slices, device)
-
-    # print("testing on validation data...", flush=True)
-    # training.evaluate_slice(model, validation_loader, construct_kernel, equivariant_blocks, atom_orbitals, out_slices, device)
 
 
 if __name__ == "__main__":
