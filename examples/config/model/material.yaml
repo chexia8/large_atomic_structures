@@ -1,0 +1,20 @@
+pbc: True
+dtype: "float32"
+
+#network:
+sphere_channels: 16
+num_heads: 2
+attn_hidden_channels: 16
+attn_alpha_channels: 16
+attn_value_channels: 16
+ffn_hidden_channels: 64
+
+# training:
+patience: 500
+num_MP_layers: 1
+num_epochs: 20000
+threshold: 1e-3
+lr: 1e-4  #initial learning rate
+min_lr: 1e-5  #minimum learning rate
+rcut: 4 #half the cutoff distance of interactions
+criterion: "mse"

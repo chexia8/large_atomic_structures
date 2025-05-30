@@ -17,5 +17,5 @@ num_MP_layers: 2
 num_epochs: 5000
 threshold: 1e-5
 lr: 1e-3
-rcut: 1000.0
+min_lr: 1e-7  #minimum learning rate
 criterion: "combined"
