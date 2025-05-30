@@ -11,6 +11,7 @@ ffn_hidden_channels: 64
 
 # training:
 patience: 500
+decay: 0.5
 num_MP_layers: 1
 num_epochs: 20000
 threshold: 1e-3

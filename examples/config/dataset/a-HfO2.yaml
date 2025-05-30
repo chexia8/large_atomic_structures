@@ -23,7 +23,9 @@ mmax: 4
 orbital_basis: 'SZV'
 
 
-cell: None #None means that cell is rectangular
+train_cell:  #None means that cell is rectangular, contains the lattice vectors of the cell
+val_cell:  #same parameter but for validation structure
+test_cell:  #same parameter but for test structure
 atom_orbitals: {'8':[0,1], '72':[0,0,1,2]}
 orbital_types: [[0,1],[0,0,1,2]]
 rcut: 4
