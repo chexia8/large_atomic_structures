@@ -66,7 +66,7 @@ def main(cfg: DictConfig):
     save_file = str(results_dir / save_file)  # File to save the model
 
     batch_size = cfg.dataset.test_batch_size  # Batch size for training
-    rcut = cfg.model.rcut  # Cutoff radius for the message passing layers
+    rcut = cfg.dataset.rcut  # Cutoff radius for the message passing layers
 
     # Structure and Network parameters:
     pbc = cfg.model.pbc  # Periodic boundary conditions
