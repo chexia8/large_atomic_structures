@@ -221,6 +221,7 @@ def train_and_validate_model_subgraph(
     num_epochs=5000,
     loss_tol=0.0001,
     patience=500,
+    decay=0.5,
     threshold=1e-3,
     min_lr=1e-5,
     save_file="model.pth",
@@ -245,7 +246,7 @@ def train_and_validate_model_subgraph(
         criterion = CombinedLoss()
 
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, mode="min", factor=0.5, patience=patience, threshold=threshold
+        optimizer, mode="min", factor=decay, patience=patience, threshold=threshold
     )
 
     if dist.is_available() and dist.is_initialized():
@@ -1158,9 +1159,7 @@ def evaluate_model(
                 plt.ylabel("Predicted  $H_{ij}$")
                 plt.legend()
                 # plt.text(0.5, 0.1, 'Node loss = '+str(MAE_node.item())+', Edge loss = '+str(MAE_edge.item()), fontsize=5, transform=plt.gca().transAxes)
-                plt.savefig(
-                    "prediction_" + save_file + ".png", dpi=300, bbox_inches="tight"
-                )
+                plt.savefig(save_file + ".png", dpi=300, bbox_inches="tight")
                 plt.close()
 
     if reconstruct_ham is True:
