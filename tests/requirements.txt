@@ -10,6 +10,6 @@ torch-sparse
 torch-cluster
 torch-spline-conv
 torch-geometric
-ase==3.22.1
+ase==3.25.0
 pytest==7.4.0
 pytest-cov==3.0.0
