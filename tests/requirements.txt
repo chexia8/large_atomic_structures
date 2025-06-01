@@ -11,5 +11,5 @@ torch-cluster
 torch-spline-conv
 torch-geometric
 ase==3.22.1
-pytest==7.4.0
+pytest==8.3.5
 pytest-cov==3.0.0
