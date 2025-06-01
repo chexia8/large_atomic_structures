@@ -2,7 +2,7 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
 --find-links https://data.pyg.org/whl/torch-2.6.0+cpu.html
 numpy==2.2.6
-torch==2.6.0+cpu
+torch==2.7.0
 torchvision==0.21.0+cpu
 e3nn==0.5.1
 torch-scatter
