@@ -16,7 +16,7 @@ git clone https://huggingface.co/datasets/chexia8/Amorphous-Hamiltonians
 cd Amorphous-Hamiltonians
 git lfs pull
 ```
-Small molecule datasets (water, uracil and malondialdehyde) from MD17 can be downloaded from  http://www.quantum-machine.org/datasets. 
+The .db files for small molecule datasets (water, uracil and malondialdehyde) from MD17 can be downloaded from  http://www.quantum-machine.org/datasets. 
 
 ## Usage
 
