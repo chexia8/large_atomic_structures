@@ -1,7 +1,7 @@
 tag: a-HfO2
-train_folder: '/usr/scratch2/tortin13/chexia/HfO2_2/'
-val_folder: '/usr/scratch2/tortin13/chexia/HfO2_1/'
-test_folder: '/usr/scratch2/tortin13/chexia/HfO2_3/'
+train_folder: '../../../Amorphous-Hamiltonians/HfO2_2/'
+val_folder: '../../../Amorphous-Hamiltonians/HfO2_1/'
+test_folder: '../../../Amorphous-Hamiltonians/HfO2_3/'
 
 train_start: -1
 train_total_length: 54

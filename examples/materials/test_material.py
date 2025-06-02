@@ -77,9 +77,9 @@ def main(cfg: DictConfig):
     # ************************************************************
 
     data_folder = cfg.dataset.test_folder  # Path to the dataset folder
-    xyz_file = data_folder + "snapshot.xyz"
-    hamiltonian_file = data_folder + "memrstors-KS_SPIN_1-1_0.csr"
-    overlap_file = data_folder + "memrstors-S_SPIN_1-1_0.csr"
+    xyz_file = data_folder + "structure.xyz"
+    hamiltonian_file = data_folder + "H.csr"
+    overlap_file = data_folder + "S.csr"
 
     dtype = torch.float32
 

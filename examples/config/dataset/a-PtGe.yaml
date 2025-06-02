@@ -1,7 +1,7 @@
 tag: a-HfO2
-train_folder: 'datasets/PtGe_1/'
-val_folder: 'datasets/PtGe_1/'
-test_folder: 'datasets/PtGe_2/'
+train_folder: '../../../Amorphous-Hamiltonians/PtGe_1/'
+val_folder: '../../../Amorphous-Hamiltonians/PtGe_1/'
+test_folder: '../../../Amorphous-Hamiltonians/PtGe_2/'
 
 train_start: 0
 train_total_length: 50

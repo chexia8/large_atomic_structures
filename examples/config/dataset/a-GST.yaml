@@ -1,7 +1,7 @@
 tag: a-GST
-train_folder: 'datasets/GST_1/'
-val_folder: 'datasets/GST_1/'
-test_folder: 'datasets/GST_test/'
+train_folder: '../../../Amorphous-Hamiltonians/GST_1/'
+val_folder: '../../../Amorphous-Hamiltonians/GST_1/'
+test_folder: '../../../Amorphous-Hamiltonians/GST_test/'
 
 train_start: 0
 train_total_length: 30

@@ -80,14 +80,14 @@ def main(cfg: DictConfig):
     # ************************************************************
 
     data_folder = cfg.dataset.train_folder  # Path to the dataset folder
-    xyz_file = data_folder + "snapshot.xyz"
-    hamiltonian_file = data_folder + "memrstors-KS_SPIN_1-1_0.csr"
-    overlap_file = data_folder + "memrstors-S_SPIN_1-1_0.csr"
+    xyz_file = data_folder + "structure.xyz"
+    hamiltonian_file = data_folder + "H.csr"
+    overlap_file = data_folder + "S.csr"
 
     val_data_folder = cfg.dataset.val_folder
-    val_xyz_file = val_data_folder + "snapshot.xyz"
-    val_hamiltonian_file = val_data_folder + "memrstors-KS_SPIN_1-1_0.csr"
-    val_overlap_file = val_data_folder + "memrstors-S_SPIN_1-1_0.csr"
+    val_xyz_file = val_data_folder + "structure.xyz"
+    val_hamiltonian_file = val_data_folder + "H.csr"
+    val_overlap_file = val_data_folder + "S.csr"
 
     dtype = torch.float32
 
@@ -95,7 +95,7 @@ def main(cfg: DictConfig):
 
     results_dir = Path(f"results_{tag}")
     results_dir.mkdir(parents=True, exist_ok=True)
-    save_file = "test"
+    save_file = "model"
     save_file = str(results_dir / save_file)
 
     restart_file = None
