@@ -1,15 +1,15 @@
 tag: a-HfO2
-train_folder: '/usr/scratch2/tortin13/chexia/HfO2_2/'
-val_folder: '/usr/scratch2/tortin13/chexia/HfO2_1/'
-test_folder: '/usr/scratch2/tortin13/chexia/HfO2_3/'
+train_folder: 'datasets/PtGe_1/'
+val_folder: 'datasets/PtGe_1/'
+test_folder: 'datasets/PtGe_2/'
 
-train_start: -1
-train_total_length: 54
-train_num_slices: 18
+train_start: 0
+train_total_length: 50
+train_num_slices: 10
 train_slice_direction: 0 # 0 for x, 1 for y, 2 for z direction of slicing
 
-val_start: 25
-val_total_length: 4
+val_start: 70
+val_total_length: 5
 val_slice_direction: 0 # 0 for x, 1 for y, 2 for z direction of slicing
 
 test_start: -1
@@ -26,6 +26,6 @@ orbital_basis: 'SZV'
 train_cell:  #None means that cell is rectangular, contains the lattice vectors of the cell
 val_cell:  #same parameter but for validation structure
 test_cell:  #same parameter but for test structure
-atom_orbitals: {'8':[0,1], '72':[0,0,1,2]}
+atom_orbitals: {'32':[0,1], '78':[0,0,1,2]}
 orbital_types: [[0,1],[0,0,1,2]]
 rcut: 4

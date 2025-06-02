@@ -6,6 +6,8 @@ num_test: 3900
 
 batch_size: 10
 test_batch_size: 64
+num_epochs: 4000 #adjusted so that total number of training steps is 200,000s
+
 
 lmax: 4
 mmax: 4

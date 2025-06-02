@@ -1,0 +1,15 @@
+tag: malondialdehyde
+db_path: '/usr/scratch/attelas8/manasa/ICLR_2025/amorphous_gnns/datasets/schnorb_hamiltonian_malondialdehyde.db'
+num_train: 25000
+num_validate: 50
+num_test: 1478
+
+batch_size: 5
+test_batch_size: 64
+num_epochs: 40
+
+lmax: 4
+mmax: 4
+atom_orbitals: {'1': [0, 0, 1], '6':[0, 0, 0, 1, 1, 2], '8':[0, 0, 0, 1, 1, 2]}
+orbital_types: [[0,0,1],[0, 0, 0, 1, 1, 2], [0, 0, 0, 1, 1, 2]]
+rcut: 1000.0

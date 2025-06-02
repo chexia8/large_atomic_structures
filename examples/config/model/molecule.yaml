@@ -15,7 +15,6 @@ ffn_hidden_channels: 64
 patience: 50
 decay: 0.5
 num_MP_layers: 2
-num_epochs: 5000
 threshold: 1e-5
 lr: 1e-3
 min_lr: 1e-7  #minimum learning rate
