@@ -10,9 +10,11 @@ git clone https://github.com/yourusername/yourproject.git
 cd large_atomic_structures
 pip install -e .
 ```
-Next is to clone the dataset into a separate folder
+Next is to clone the dataset into a separate folder and download the files
 ```bash
 git clone https://huggingface.co/datasets/chexia8/Amorphous-Hamiltonians
+cd Amorphous-Hamiltonians
+git lfs pull
 ```
 
 ## Usage
