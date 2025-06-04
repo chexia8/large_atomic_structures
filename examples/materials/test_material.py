@@ -120,7 +120,7 @@ def main(cfg: DictConfig):
 
     # *** Initialize the domain and electronic structure matrices:
 
-    a_HfO2 = structure.Structure(
+    material = structure.Structure(
         xyz_file,
         hamiltonian_file,
         overlap_file,
@@ -158,7 +158,7 @@ def main(cfg: DictConfig):
     atom_orbitals = (
         cfg.dataset.atom_orbitals
     )  # Orbital types of each atom in the structure
-    numbers = a_HfO2.atomic_numbers  # Atomic numbers of each atom in the structure
+    numbers = material.atomic_numbers  # Atomic numbers of each atom in the structure
     no_parity = True  # No parity symmetry
     orbital_types = cfg.dataset.orbital_types  # must be in ascending order of atomic numbers                                                 # basis rank of each atom in the structure
 
@@ -195,8 +195,8 @@ def main(cfg: DictConfig):
         cfg.dataset.test_slice_direction
     )  # Direction of the slices, e.g., 'x', 'y', 'z'
 
-    data_loader = data.batch_data_HfO2_cartesian(
-        a_HfO2,
+    data_loader = data.batch_data_material_cartesian(
+        material,
         start,
         total_length,
         num_slices,
