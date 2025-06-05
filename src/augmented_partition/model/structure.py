@@ -321,54 +321,6 @@ class Structure:
                     :, d_permutation
                 ]
 
-        #     sorted_hamiltonian = hamiltonian.clone()
-
-        #     print(sorted_hamiltonian)
-
-        #     hamiltonian = hamiltonian_stored.clone()
-
-        # for p in range(num_p_orbitals):
-        #     start_p_index = starting_index + 1 * num_s_orbitals + 3 * p
-
-        #     # ORCA order -> CP2K order: [2, 0, 1]
-        #     # [0, 1, -1] -> [-1, 0, 1]
-        #     # swap(0, 1), swap(0, 2)
-        #     hamiltonian = self.swap(
-        #         hamiltonian, start_p_index + 0, start_p_index + 1
-        #     )
-        #     hamiltonian = self.swap(
-        #         hamiltonian, start_p_index + 0, start_p_index + 2
-        #     )
-
-        # for d in range(num_d_orbitals):
-        #     # ORCA order -> CP2K order: [4, 2, 0, 1, 3]
-        #     # [0, 1, -1, 2, -2] -> [-2, -1, 0, 1, 2]
-        #     # swap(0, 4), (1, 2), (2, 4), (3, 4)
-        #     start_d_index = (
-        #         starting_index + 1 * num_s_orbitals + 3 * num_p_orbitals + 5 * d
-        #     )
-        #     hamiltonian = self.swap(
-        #         hamiltonian, start_d_index + 0, start_d_index + 4
-        #     )
-        #     hamiltonian = self.swap(
-        #         hamiltonian, start_d_index + 1, start_d_index + 2
-        #     )
-        #     hamiltonian = self.swap(
-        #         hamiltonian, start_d_index + 2, start_d_index + 4
-        #     )
-        #     hamiltonian = self.swap(
-        #         hamiltonian, start_d_index + 3, start_d_index + 4
-        #     )
-
-        #     sorted_hamiltonian2 = hamiltonian.clone()
-
-        #     print(sorted_hamiltonian2)
-        #     asdf
-        #     assert torch.allclose(
-        #         sorted_hamiltonian, sorted_hamiltonian2
-        #     ), "Hamiltonian matrix is not sorted correctly. Please check the permutation logic."
-        # # return the modified hamiltonian matrix
-
         return hamiltonian
 
     # def swap(self, matrix, i, j):
