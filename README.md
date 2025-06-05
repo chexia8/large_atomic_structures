@@ -1,21 +1,23 @@
 # Learning the Electronic Hamiltonian of Large Atomic Structures
 
-Official code implementation of "Learning the Electronic Hamiltonian of Large Atomic Structures" (ICML 2025)
+Official code implementation of "Learning the Electronic Hamiltonian of Large Atomic Structures" (ICML 2025). Developers: Chen Hao Xia, Manasa Kaniselvan, Alexandros Nikolaos Ziogas. 
 
 ## Installation
 
-First step is to clone the repository and install the package. 
+The environment can be firstly created using the provided yml file:
+```bash
+conda env create -f augment_partition.yml
+conda activate augment_partition
+```
+
+Next step is to clone the repository and install the package. 
 ```bash
 git clone https://github.com/yourusername/yourproject.git
 cd large_atomic_structures
 pip install -e .
 
 ```
-The environment can be created through the following command:
-```bash
-conda env create -f augment_partition.yml
-```
-Next step is to clone the dataset into a separate folder and download the files
+Finally, we clone the dataset into a separate directory and download the files
 ```bash
 git clone https://huggingface.co/datasets/chexia8/Amorphous-Hamiltonians
 cd Amorphous-Hamiltonians
@@ -53,4 +55,22 @@ This will print the node, edge and total Mean Absolute Error (MAE) of the predic
 ```bash
 mpiexec -n 4 python test_material.py model=material dataset=a-HfO2
 ```
+
+## Citation
+
+Please consider the citing the following work if the repository is helpful:
+```bash
+@misc{xia2025learninghamiltonianmatrixlarge,
+      title={Learning the Electronic Hamiltonian of Large Atomic Structures}, 
+      author={Chen Hao Xia and Manasa Kaniselvan and Alexandros Nikolaos Ziogas and Marko Mladenović and Rayen Mahjoub and Alexander Maeder and Mathieu Luisier},
+      year={2025},
+      eprint={2501.19110},
+      archivePrefix={arXiv},
+      primaryClass={cond-mat.mtrl-sci},
+      url={https://arxiv.org/abs/2501.19110}, 
+}
+```
+
+Please direct further questions to Chen Hao Xia (Kevin) at chexia@iis.ee.ethz.ch.
+
 
