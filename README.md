@@ -4,11 +4,16 @@ Official code implementation of "Learning the Electronic Hamiltonian of Large At
 
 ## Installation
 
-First step is to clone the repository and install the package along with its dependencies. 
+First step is to clone the repository and install the package. 
 ```bash
 git clone https://github.com/yourusername/yourproject.git
 cd large_atomic_structures
 pip install -e .
+
+```
+The environment can be created through the following command:
+```bash
+conda env create -f conda_requirements.yml
 ```
 Next is to clone the dataset into a separate folder and download the files
 ```bash
@@ -43,7 +48,7 @@ python test_material.py dataset=a-HfO2 model=material
 
 ```
 
-This will print the node, edge and total Mean Absolute Error of the prediction, and also reconstruct the Hamiltonian if needed. Note that for large structures, multiple cores can be used through the command:
+This will print the node, edge and total Mean Absolute Error (MAE) of the prediction, and also reconstruct the Hamiltonian if needed. Note that for large structures, multiple cores can be used through the command:
 
 ```bash
 mpiexec -n 4 python test_material.py model=material dataset=a-HfO2
