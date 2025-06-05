@@ -68,7 +68,7 @@ def main(cfg: DictConfig):
 
     save_file = str(results_dir / save_file)
 
-    num_epochs = cfg.model.num_epochs  # Number of epochs for training
+    num_epochs = cfg.dataset.num_epochs  # Number of epochs for training
     batch_size = cfg.dataset.batch_size  # Batch size for training
     loss_tol = 1e-10
     lr = cfg.model.lr  # Learning rate for the optimizer
