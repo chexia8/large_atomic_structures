@@ -4,7 +4,7 @@ Official code implementation of "Learning the Electronic Hamiltonian of Large At
 
 ## Installation
 
-The environment can be firstly created using the provided yml file:
+The environment can firstly be created using the provided yml file:
 ```bash
 conda env create -f augment_partition.yml
 conda activate augment_partition
