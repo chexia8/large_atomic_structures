@@ -12,8 +12,8 @@ val_start: 70
 val_total_length: 5
 val_slice_direction: 0 # 0 for x, 1 for y, 2 for z direction of slicing
 
-test_start: -1
-test_total_length: 60
+test_start: -100
+test_total_length: 200
 test_num_slices: 1
 test_slice_direction: 0 # 0 for x, 1 for y, 2 for z direction of slicing
 
