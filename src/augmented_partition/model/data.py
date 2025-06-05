@@ -495,7 +495,7 @@ def createdata_subgraph_cartesian(
 
 
 # used in structures/materials/a-HfO2/
-def batch_data_HfO2_cartesian(
+def batch_data_material_cartesian(
     graph,
     start0,
     total_length,

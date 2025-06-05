@@ -1,0 +1,31 @@
+tag: a-GST
+train_folder: '../../../Amorphous-Hamiltonians/GST_1/'
+val_folder: '../../../Amorphous-Hamiltonians/GST_1/'
+test_folder: '../../../Amorphous-Hamiltonians/GST_test/'
+
+train_start: 0
+train_total_length: 30
+train_num_slices: 6
+train_slice_direction: 2 # 0 for x, 1 for y, 2 for z direction of slicing
+
+val_start: 35
+val_total_length: 5
+val_slice_direction: 2 # 0 for x, 1 for y, 2 for z direction of slicing
+
+test_start: -100
+test_total_length: 200
+test_num_slices: 1
+test_slice_direction: 2 # 0 for x, 1 for y, 2 for z direction of slicing
+
+
+lmax: 4
+mmax: 4
+orbital_basis: 'DZVP'
+
+
+train_cell:  #None means that cell is rectangular, contains the lattice vectors of the cell
+val_cell:  #same parameter but for validation structure
+test_cell: [[25.85676,0.00000,0.00000], [-17.23784,  29.85682,   0.00000], [0.00000,   0.00000,  41.69124]] #same parameter but for test structure
+atom_orbitals: {'32':[0,0,1,1,2], '51':[0,0,1,1,2], '52':[0,0,1,1,2]}
+orbital_types: [[0,0,1,1,2],[0,0,1,1,2],[0,0,1,1,2]]
+rcut: 6

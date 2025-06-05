@@ -1,0 +1,31 @@
+tag: a-HfO2
+train_folder: '../../../Amorphous-Hamiltonians/PtGe_1/'
+val_folder: '../../../Amorphous-Hamiltonians/PtGe_1/'
+test_folder: '../../../Amorphous-Hamiltonians/PtGe_2/'
+
+train_start: 0
+train_total_length: 50
+train_num_slices: 10
+train_slice_direction: 0 # 0 for x, 1 for y, 2 for z direction of slicing
+
+val_start: 70
+val_total_length: 5
+val_slice_direction: 0 # 0 for x, 1 for y, 2 for z direction of slicing
+
+test_start: -1
+test_total_length: 60
+test_num_slices: 1
+test_slice_direction: 0 # 0 for x, 1 for y, 2 for z direction of slicing
+
+
+lmax: 4
+mmax: 4
+orbital_basis: 'SZV'
+
+
+train_cell:  #None means that cell is rectangular, contains the lattice vectors of the cell
+val_cell:  #same parameter but for validation structure
+test_cell:  #same parameter but for test structure
+atom_orbitals: {'32':[0,1], '78':[0,0,1,2]}
+orbital_types: [[0,1],[0,0,1,2]]
+rcut: 4
