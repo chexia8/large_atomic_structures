@@ -13,15 +13,15 @@ pip install -e .
 ```
 The environment can be created through the following command:
 ```bash
-conda env create -f conda_requirements.yml
+conda env create -f augment_partition.yml
 ```
-Next is to clone the dataset into a separate folder and download the files
+Next step is to clone the dataset into a separate folder and download the files
 ```bash
 git clone https://huggingface.co/datasets/chexia8/Amorphous-Hamiltonians
 cd Amorphous-Hamiltonians
 git lfs pull
 ```
-The .db files for small molecule datasets (water, uracil and malondialdehyde) from MD17 can be downloaded from  http://www.quantum-machine.org/datasets. 
+The .db files for small molecule datasets (water, uracil and malondialdehyde) from MD17 can be downloaded from  http://www.quantum-machine.org/datasets, under the section "Molecular Hamiltonians and overlap matrices"
 
 ## Usage
 
