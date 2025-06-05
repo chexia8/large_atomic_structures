@@ -50,7 +50,7 @@ python test_material.py dataset=a-HfO2 model=material
 
 ```
 
-This will print the node, edge and total Mean Absolute Error (MAE) of the prediction, and also reconstruct the Hamiltonian if needed. Note that for large structures, multiple cores can be used through the command:
+This will print the node, edge and total Mean Absolute Error (MAE) of the prediction, and also reconstruct the Hamiltonian matrix if needed. Note that for large matrices, the reconstruction process can be parallelized. For example:
 
 ```bash
 mpiexec -n 4 python test_material.py model=material dataset=a-HfO2
