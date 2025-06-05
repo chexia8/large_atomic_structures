@@ -58,7 +58,7 @@ mpiexec -n 4 python test_material.py model=material dataset=a-HfO2
 
 ## Citation
 
-Please consider the citing the following work if the repository is helpful:
+Please consider citing the following work if the repository is helpful:
 ```bash
 @misc{xia2025learninghamiltonianmatrixlarge,
       title={Learning the Electronic Hamiltonian of Large Atomic Structures}, 
