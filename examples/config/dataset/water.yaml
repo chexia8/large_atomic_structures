@@ -11,6 +11,6 @@ num_epochs: 4000 #adjusted so that total number of training steps is 200,000s
 
 lmax: 4
 mmax: 4
-atom_orbitals: {'1': [0, 0, 1],'8':[0, 0, 0, 1, 1, 2]}
+atom_orbitals: {'1': [0, 0, 1],'8':[0, 0, 0, 1, 1, 2]} # key represents the atomic number, value is a list of orbitals with different l for that atom
 orbital_types: [[0,0,1],[0, 0, 0, 1, 1, 2]]
-rcut: 1000.0
+rcut: 1000.0 # This is a large value to ensure that all atoms are included in the cutoff radius
