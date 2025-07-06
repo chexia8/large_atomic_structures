@@ -1,3 +1,7 @@
 defaults:
   - model: molecule
   - dataset: water
+
+hydra:
+  run:
+    dir: ./results_${dataset.tag}/${now:%Y-%m-%d_%H-%M-%S}
