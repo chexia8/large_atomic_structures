@@ -60,14 +60,13 @@ mpiexec -n 4 python test_material.py model=material dataset=a-HfO2
 
 Please consider citing the following work if the repository is helpful:
 ```bash
-@misc{xia2025learninghamiltonianmatrixlarge,
-      title={Learning the Electronic Hamiltonian of Large Atomic Structures}, 
-      author={Chen Hao Xia and Manasa Kaniselvan and Alexandros Nikolaos Ziogas and Marko Mladenović and Rayen Mahjoub and Alexander Maeder and Mathieu Luisier},
-      year={2025},
-      eprint={2501.19110},
-      archivePrefix={arXiv},
-      primaryClass={cond-mat.mtrl-sci},
-      url={https://arxiv.org/abs/2501.19110}, 
+@inproceedings{
+xia2025learning,
+title={Learning the Electronic Hamiltonian of Large Atomic Structures},
+author={Chen Hao Xia and Manasa Kaniselvan and Alexandros Nikolaos Ziogas and Marko Mladenovi{\'c} and Rayen Mahjoub and Alexander Maeder and Mathieu Luisier},
+booktitle={Forty-second International Conference on Machine Learning},
+year={2025},
+url={https://openreview.net/forum?id=WGejWCgrpD}
 }
 ```
 
