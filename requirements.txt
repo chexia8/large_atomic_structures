@@ -91,7 +91,7 @@ tensorboard==2.19.0
 tensorboard-data-server==0.7.2
 tensorboardX==2.6.2.2
 threadpoolctl==3.6.0
-torch==2.4.1
+torch==2.8.0+cpu
 torch-ema==0.3
 torch-geometric==2.6.1
 torchmetrics==1.7.1
