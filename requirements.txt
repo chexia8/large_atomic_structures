@@ -75,7 +75,7 @@ protobuf==6.31.0
 psutil==7.0.0
 Pygments==2.19.1
 pyparsing==3.2.3
-pytest==8.3.5
+pytest==8.4.2
 python-dateutil==2.9.0.post0
 pytorch-lightning==2.5.1.post0
 PyYAML==6.0.2
